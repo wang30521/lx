@@ -1,7 +1,7 @@
 package io.cjf.blockchainexplorer.enumeration;
 
 public enum TransactionDetailType {
-    Reward,
-    Send,
-    Receive
+    Reward,//旷工
+    Send,//发送
+    Receive//接收
 }

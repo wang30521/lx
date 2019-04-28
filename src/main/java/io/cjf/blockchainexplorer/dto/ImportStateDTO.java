@@ -1,6 +1,8 @@
 package io.cjf.blockchainexplorer.dto;
 
-public class ImportStateDTO {
+import java.io.Serializable;
+
+public class ImportStateDTO implements Serializable {
     private Integer blockHeight;
     private String blockhash;
     private String txid;

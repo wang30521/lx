@@ -2,16 +2,19 @@ package io.cjf.blockchainexplorer.dto;
 
 import io.cjf.blockchainexplorer.po.Block;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class BlockDetailDTO {
+public class BlockDetailDTO implements Serializable {
 
     private String blockhash;
 
     private Integer height;
 
-    private Date time;
+    private Date blockTime;
+
+    private Long time;
 
     private Integer txSize;
 
@@ -29,21 +32,12 @@ public class BlockDetailDTO {
 
     private String merkleRoot;
 
-    public BlockDetailDTO(){};
+    private Integer bcId;
 
-    public BlockDetailDTO(Block block){
-        this.blockhash = block.getBlockhash();
-        this.height = block.getHeight();
-        this.difficulty = block.getDifficulty();
-        this.merkleRoot = block.getMerkleRoot();
-        this.nextBlockhash = block.getNextBlockhash();
-        this.prevBlockhash = block.getPrevBlockhash();
-        this.sizeOnDisk = block.getSizeOnDisk();
-        this.time = block.getTime();
-        this.txSize = block.getTxSize();
-    };
+    private Double jiangli;
 
-    private List<TransactionInBlockDTO> transactions;
+    private List<TransactionInBlockDTO> txList;
+
 
     public String getBlockhash() {
         return blockhash;
@@ -61,11 +55,19 @@ public class BlockDetailDTO {
         this.height = height;
     }
 
-    public Date getTime() {
+    public Date getBlockTime() {
+        return blockTime;
+    }
+
+    public void setBlockTime(Date blockTime) {
+        this.blockTime = blockTime;
+    }
+
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
@@ -133,11 +135,27 @@ public class BlockDetailDTO {
         this.merkleRoot = merkleRoot;
     }
 
-    public List<TransactionInBlockDTO> getTransactions() {
-        return transactions;
+    public Integer getBcId() {
+        return bcId;
     }
 
-    public void setTransactions(List<TransactionInBlockDTO> transactions) {
-        this.transactions = transactions;
+    public void setBcId(Integer bcId) {
+        this.bcId = bcId;
+    }
+
+    public Double getJiangli() {
+        return jiangli;
+    }
+
+    public void setJiangli(Double jiangli) {
+        this.jiangli = jiangli;
+    }
+
+    public List<TransactionInBlockDTO> getTxList() {
+        return txList;
+    }
+
+    public void setTxList(List<TransactionInBlockDTO> txList) {
+        this.txList = txList;
     }
 }

@@ -43,23 +43,29 @@ public class MiscServiceImpl implements MiscService {
 
     @Async
     @Override
-    public void importFromHeight(Integer blockHeight, Boolean isClean) {
+    public void importByHeight(Integer blockHeight, Boolean isClean) {
 
     }
 
     @Async
     @Override
-    public void importFromHash(String blockHash, Boolean isClean) throws Throwable {
-        if (isClean){
-            blockMapper.truncate();
-            transactionMapper.truncate();
-            transactionDetailMapper.truncate();
-        }
+    public void importByHash(String blockHash, Boolean isClean) throws Throwable {
 
-        String temphash = blockHash;
+        String tempHash = blockHash;
 
-        while (temphash != null && !temphash.isEmpty()){
-            JSONObject blockOrigin = bitcoinApi.getBlock(temphash);
+        //如果tomcat或者mysql崩溃了或者上次数据并没有全部导入 如何续存
+        //先查询Block中有没有数据  没有数据则是续存
+        //查询Block的条数 大于0则表示有数据 需要续存
+//        int count = blockMapper.selectCount();
+//        if (count > 0) {
+//            Integer maxHeight = blockMapper.selectMaxHeight();
+//            maxHeight += 2;
+//            String blockHashByHeight = bitcoinJsonRpcClient.getBlockHashByHeight(maxHeight);
+//            tempHash = blockHashByHeight;
+//        }
+
+        while (tempHash != null && !tempHash.isEmpty()){
+            JSONObject blockOrigin = bitcoinApi.getBlock(tempHash);
             Block block = new Block();
             block.setBlockhash(blockOrigin.getString("hash"));
             block.setBlockchainId(2);
@@ -67,31 +73,32 @@ public class MiscServiceImpl implements MiscService {
             Long time = blockOrigin.getLong("time");
             Date date = new Date(time * 1000);
             block.setTime(date);
-            JSONArray txes = blockOrigin.getJSONArray("tx");
-            for (int i = 0; i < txes.size(); i++) {
-                importTx(txes.getJSONObject(i),temphash,date);
+            //交易信息集
+            JSONArray txs = blockOrigin.getJSONArray("tx");
+            for (int i = 0; i < txs.size(); i++) {
+                JSONObject jsonObject = txs.getJSONObject(i);
+                importTx(jsonObject, tempHash, date);
             }
-            block.setTxSize(txes.size());
+            block.setTxSize(txs.size());
             block.setSizeOnDisk(blockOrigin.getLong("size"));
             block.setDifficulty(blockOrigin.getDouble("difficulty"));
             block.setPrevBlockhash(blockOrigin.getString("previousblockhash"));
             block.setNextBlockhash(blockOrigin.getString("nextblockhash"));
             block.setMerkleRoot(blockOrigin.getString("merkleroot"));
             blockMapper.insert(block);
-
-            temphash = blockOrigin.getString("nextblockhash");
+            tempHash = blockOrigin.getString("nextblockhash");
+            System.out.println("块的下标: "  + block.getHeight());
         }
-
-        logger.info("sync finished");
-
+        System.out.println("完成！！！");
     }
 
-    public void importTx(JSONObject tx, String blockhash, Date time) throws Throwable {
+    public void importTx(JSONObject tx, String blockHash, Date time) throws Throwable {
+
         Transaction transaction = new Transaction();
         String txid = tx.getString("txid");
         transaction.setTxid(txid);
         transaction.setTxhash(tx.getString("hash"));
-        transaction.setBlockhash(blockhash);
+        transaction.setBlockhash(blockHash);
         transaction.setSize(tx.getLong("size"));
         transaction.setWeight(tx.getInteger("weight"));
         transaction.setTime(time);

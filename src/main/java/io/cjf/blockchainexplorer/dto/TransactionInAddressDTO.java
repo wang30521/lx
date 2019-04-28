@@ -1,4 +1,6 @@
-package io.cjf.blockchainexplorer.controller;
+package io.cjf.blockchainexplorer.dto;
+
+import io.cjf.blockchainexplorer.controller.ReceiveInTxInAddressDTO;
 
 import java.util.Date;
 import java.util.List;

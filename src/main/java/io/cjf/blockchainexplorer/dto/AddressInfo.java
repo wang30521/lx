@@ -1,10 +1,9 @@
 package io.cjf.blockchainexplorer.dto;
 
-import io.cjf.blockchainexplorer.controller.TransactionInAddressDTO;
-
+import java.io.Serializable;
 import java.util.List;
 
-public class AddressInfo {
+public class AddressInfo implements Serializable {
     private String address;
     private String hash160;
     private Integer txSize;

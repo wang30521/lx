@@ -1,8 +1,9 @@
 package io.cjf.blockchainexplorer.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BlockListDTO {
+public class BlockListDTO implements Serializable {
     private String blockhash;
     private Integer height;
     private Date time;

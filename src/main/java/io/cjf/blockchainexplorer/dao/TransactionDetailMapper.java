@@ -1,7 +1,7 @@
 package io.cjf.blockchainexplorer.dao;
 
 import io.cjf.blockchainexplorer.controller.ReceiveInTxInAddressDTO;
-import io.cjf.blockchainexplorer.controller.TransactionInAddressDTO;
+import io.cjf.blockchainexplorer.dto.TransactionInAddressDTO;
 import io.cjf.blockchainexplorer.po.TransactionDetail;
 import io.cjf.blockchainexplorer.po.TransactionDetailKey;
 import org.apache.ibatis.annotations.Param;

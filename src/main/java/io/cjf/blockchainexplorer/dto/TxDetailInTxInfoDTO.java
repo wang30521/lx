@@ -1,9 +1,23 @@
-package io.cjf.blockchainexplorer.po;
+package io.cjf.blockchainexplorer.dto;
 
-public class TransactionDetail extends TransactionDetailKey {
+import java.io.Serializable;
+
+public class TxDetailInTxInfoDTO implements Serializable {
+    private String address;
+
     private Byte type;
 
     private Double amount;
+
+
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public Byte getType() {
         return type;
@@ -20,5 +34,4 @@ public class TransactionDetail extends TransactionDetailKey {
     public void setAmount(Double amount) {
         this.amount = amount;
     }
-
 }

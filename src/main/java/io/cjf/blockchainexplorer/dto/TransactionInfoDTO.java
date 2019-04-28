@@ -2,10 +2,11 @@ package io.cjf.blockchainexplorer.dto;
 
 import io.cjf.blockchainexplorer.po.TransactionDetail;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class TransactionInfoDTO {
+public class TransactionInfoDTO implements Serializable {
     private String txid;
 
     private String txhash;
@@ -22,7 +23,7 @@ public class TransactionInfoDTO {
 
     private Double fees;
 
-    private List<TxDetailInTxInfo> txDetails;
+    private List<TxDetailInTxInfoDTO> txDetails;
 
     public String getTxid() {
         return txid;
@@ -88,11 +89,11 @@ public class TransactionInfoDTO {
         this.fees = fees;
     }
 
-    public List<TxDetailInTxInfo> getTxDetails() {
+    public List<TxDetailInTxInfoDTO> getTxDetails() {
         return txDetails;
     }
 
-    public void setTxDetails(List<TxDetailInTxInfo> txDetails) {
+    public void setTxDetails(List<TxDetailInTxInfoDTO> txDetails) {
         this.txDetails = txDetails;
     }
 }

@@ -1,13 +1,14 @@
 package io.cjf.blockchainexplorer.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TransactionListDTO {
+public class TransactionListDTO implements Serializable {
     private String txid;
 
     private String txhash;
 
-    private Date time;
+    private Long time;
 
     private Double amount;
 
@@ -27,11 +28,11 @@ public class TransactionListDTO {
         this.txhash = txhash;
     }
 
-    public Date getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
