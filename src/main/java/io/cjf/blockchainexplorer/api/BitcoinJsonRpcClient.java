@@ -45,4 +45,35 @@ public class BitcoinJsonRpcClient {
         String bestblockhash = jsonRpcHttpClient.invoke("getbestblockhash", new Object[]{}, String.class);
         return bestblockhash;
     }
+
+    //获取交易详细信息 hash
+    public JSONObject getmempoolentry(String txid) throws Throwable {
+        JSONObject getrawmempool = jsonRpcHttpClient.invoke("getmempoolentry", new Object[]{txid}, JSONObject.class);
+        return getrawmempool;
+    }
+    //获取交易池的信息
+    public JSONArray getrawmempool() throws Throwable {
+        JSONArray getrawmempool = jsonRpcHttpClient.invoke("getrawmempool", new Object[]{false}, JSONArray.class);
+        return getrawmempool;
+    }
+
+    //获取交易池的详细信息
+    public JSONArray getMempoolInfo() throws Throwable {
+
+        JSONArray jsonArray = new JSONArray();
+
+        JSONArray getrawmempool = getrawmempool();
+
+        for (int i = 0; i < getrawmempool.size(); i++){
+
+            String txid = getrawmempool.getString(i);
+
+            JSONObject getmempoolentry = getmempoolentry(txid);
+            getmempoolentry.put("hash", txid);
+
+            jsonArray.add(getmempoolentry);
+        }
+
+        return jsonArray;
+    }
 }

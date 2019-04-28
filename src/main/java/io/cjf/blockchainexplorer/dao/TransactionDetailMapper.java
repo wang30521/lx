@@ -1,5 +1,7 @@
 package io.cjf.blockchainexplorer.dao;
 
+import io.cjf.blockchainexplorer.controller.ReceiveInTxInAddressDTO;
+import io.cjf.blockchainexplorer.controller.TransactionInAddressDTO;
 import io.cjf.blockchainexplorer.po.TransactionDetail;
 import io.cjf.blockchainexplorer.po.TransactionDetailKey;
 import org.apache.ibatis.annotations.Param;
@@ -22,4 +24,10 @@ public interface TransactionDetailMapper {
     int updateByPrimaryKeySelective(TransactionDetail record);
 
     int updateByPrimaryKey(TransactionDetail record);
+
+    List<TransactionInAddressDTO> getTransactionDetailByAddress(@Param("address") String address);
+
+    List<TransactionInAddressDTO> getSenderTxId(@Param("address") String address);
+
+    List<ReceiveInTxInAddressDTO> getReceived(@Param("txid") String txid);
 }

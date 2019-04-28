@@ -1,11 +1,24 @@
 package io.cjf.blockchainexplorer.dto;
 
+import io.cjf.blockchainexplorer.controller.TransactionInAddressDTO;
+
+import java.util.List;
+
 public class AddressInfo {
     private String address;
     private String hash160;
     private Integer txSize;
     private Double receiveAmount;
     private Double finalBalance;
+    private List<TransactionInAddressDTO> list;
+
+    public List<TransactionInAddressDTO> getList() {
+        return list;
+    }
+
+    public void setList(List<TransactionInAddressDTO> list) {
+        this.list = list;
+    }
 
     public String getAddress() {
         return address;
