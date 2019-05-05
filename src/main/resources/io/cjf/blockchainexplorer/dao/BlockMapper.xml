@@ -15,10 +15,41 @@
     <result column="transaction_fees" jdbcType="DOUBLE" property="transactionFees" />
     <result column="merkle_root" jdbcType="CHAR" property="merkleRoot" />
   </resultMap>
+  <resultMap id="viewMoreDTOMap" type="cn.wzy.blockchaingo.dto.BlockViewMoreDTO">
+    <id column="block_hash" jdbcType="VARCHAR" property="blockHash" />
+    <result column="block_height" jdbcType="INTEGER" property="height" />
+    <result column="block_time" jdbcType="TIMESTAMP" property="time" />
+    <result column="block_size_on_disk" jdbcType="INTEGER" property="sizeOnDisk" />
+  </resultMap>
   <sql id="Base_Column_List">
     blockhash, blockchain_id, height, time, tx_size, size_on_disk, difficulty, prev_blockhash, 
     next_blockhash, output_total, transaction_fees, merkle_root
   </sql>
+  <select id="selectCount" resultType="Integer">
+    select
+    count(1)
+    from block
+  </select>
+
+  <select id="viewMore" resultMap="viewMoreDTOMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM block
+    WHERE time LIKE CONCAT('%',#{newTime},'%')
+  </select>
+
+  <select id="selectMaxHeight" resultType="Integer">
+    select
+    MAX(b.height) maxHeight
+    from block b
+  </select>
+
+  <select id="selectByHeight" parameterType="java.lang.Integer" resultType="io.cjf.blockchainexplorer.po.Block">
+    select
+    *
+    from block
+    where height = #{maxHeight}
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -37,12 +68,12 @@
     where blockhash = #{blockhash,jdbcType=CHAR}
   </delete>
   <insert id="insert" parameterType="io.cjf.blockchainexplorer.po.Block">
-    insert into block (blockhash, blockchain_id, height, 
+    insert into block (blockhash,  height,
       time, tx_size, size_on_disk, 
       difficulty, prev_blockhash, next_blockhash, 
       output_total, transaction_fees, merkle_root
       )
-    values (#{blockhash,jdbcType=CHAR}, #{blockchainId,jdbcType=INTEGER}, #{height,jdbcType=INTEGER}, 
+    values (#{blockhash,jdbcType=CHAR}, #{height,jdbcType=INTEGER},
       #{time,jdbcType=TIMESTAMP}, #{txSize,jdbcType=INTEGER}, #{sizeOnDisk,jdbcType=BIGINT}, 
       #{difficulty,jdbcType=DOUBLE}, #{prevBlockhash,jdbcType=CHAR}, #{nextBlockhash,jdbcType=CHAR}, 
       #{outputTotal,jdbcType=DOUBLE}, #{transactionFees,jdbcType=DOUBLE}, #{merkleRoot,jdbcType=CHAR}

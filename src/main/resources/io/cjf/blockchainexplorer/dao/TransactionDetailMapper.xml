@@ -10,6 +10,34 @@
   <sql id="Base_Column_List">
     txid, address, type, amount
   </sql>
+
+  <select id="selectByAddress" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from transaction_detail
+    where address = #{address}
+  </select>
+
+  <select id="getTransactionDetailByAddress" parameterType="java.lang.String" resultType="io.cjf.blockchainexplorer.dto.TransactionInAddressDTO">
+    select ts.amount amount, ts.txid txid, tx.time time, ts.type type
+    from transaction_detail ts
+    left join `transaction` tx
+    on ts.txid = tx.txid
+    where address = #{address}
+  </select>
+
+  <select id="getSenderTxId"  resultType="io.cjf.blockchainexplorer.dto.TransactionInAddressDTO">
+    select ts.txid txid
+    from transaction_detail ts
+    where address = #{address} and ts.type = 1
+    GROUP BY ts.txid
+  </select>
+
+  <select id="getReceived"  resultType="io.cjf.blockchainexplorer.dto.ReceiveInTxInAddressDTO">
+    select address address, amount amount from `transaction_detail`
+    where txid = #{txid} and type='2'
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="io.cjf.blockchainexplorer.po.TransactionDetailKey" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
